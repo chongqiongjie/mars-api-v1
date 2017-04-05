@@ -1,0 +1,13 @@
+# gradle
+.gradle/
+
+# idea
+out/
+target/
+.idea/
+build/
+classes/
+
+# cocacola
+
+*.log
