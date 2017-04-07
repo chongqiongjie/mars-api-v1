@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.ResponseBody
@@ -32,13 +33,15 @@ class MarsTrendController {
          return ResponseEntity.status(HttpStatus.OK).body(response.toString())
     }
 
-    @RequestMapping(value = "/trend/trend_spline", method = RequestMethod.GET)
+    @RequestMapping(value = "/trend/trend_spline", method = RequestMethod.POST)
     @ResponseBody
-    def getCategory1Score(HttpServletRequest request){
-        def category_1 = request.getParameter("category_1");
-        def category_2 = request.getParameter("category_2");
-        def product_name = request.getParameter("product_name");
-
+    def getScore(@RequestBody Map<String, String> params){
+        def category_1 = params.get("category_1");
+        def category_2 = params.get("category_2");
+        def product_name = params.get("product_name");
+        println("1:" + category_1)
+        println("2:" + category_2)
+        println("3:" + product_name)
 
         if(category_1 ==null&category_2==null&product_name==null){
             def data =   marsTrendService.getAllScore()

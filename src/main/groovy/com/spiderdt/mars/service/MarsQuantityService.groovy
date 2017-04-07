@@ -33,72 +33,153 @@ class MarsQuantityService {
         def cat_1 = sqlClient.client.rows("select category_1,sum(quantity) as quantity from stg.d_mars_cat1_week_quantity group by category_1 order by quantity desc limit 10")
 
         quantity_1.add(cat_1)
-        return quantity_1
+        println(quantity_1)
+        return quantity_1.get(0)
     }
 
     def GetCategory2Top10WeekQuantity(String category_1,String week){
         def quantity_2 = new ArrayList()
-        def cat_2 = sqlClient.client.rows("select category_2,sum(quantity) as quantity from stg.d_mars_cat1_week_quantity where category_1 = ${category_1} group by category_2 order by quantity desc limit 10")
+        def cat_2 = sqlClient.client.rows("select category_2,sum(quantity) as quantity from stg.d_mars_cat2_week_quantity where category_1 = ${category_1} group by category_2 order by quantity desc limit 10")
 
         quantity_2.add(cat_2)
-        return quantity_2
+        return quantity_2.get(0)
     }
 
     def GetProductTop10WeekQuantity(String category_1,String category_2,String week){
         def product = new ArrayList()
-        def pro = sqlClient.client.rows("select product_name,sum(quantity) as quantity from stg.d_mars_cat1_week_quantity where category_1 = ${category_1} and category_2 = ${category_2} group by product_name order by quantity desc limit 10")
+        def pro = sqlClient.client.rows("select product_name,sum(quantity) as quantity from stg.d_mars_product_week_quantity where category_1 = ${category_1} and category_2 = ${category_2} group by product_name order by quantity desc limit 10")
 
         product.add(pro)
-        return  product
+        return  product.get(0)
     }
 
-    def GetCategory1OtherWeekQuantity(){
+    def GetCategory1OtherWeekQuantity(String week){
         def cat1_other = new ArrayList()
-        def cat_1 = sqlClient.client.rows("select  sum(q.quantity) as quantity (select category_1,sum(quantity) as quantity ,row_number() over() as id from stg.d_mars_cat1_week_quantity  group by category_1 order by quantity desc limit 10) q where q.id>10  ")
+        def cat_1 = sqlClient.client.rows("select  sum(q.quantity) as quantity from (select category_1,sum(quantity) as quantity ,row_number() over() as id from stg.d_mars_cat1_week_quantity  group by category_1 order by quantity desc limit 10) q where q.id>10 ")
 
 
         cat1_other.add(cat_1)
-        return cat1_other
+        println(cat1_other)
+        return cat1_other.get(0)
     }
 
-    def GetCategory2OtherWeekQuantity(){
+    def GetCategory2OtherWeekQuantity(String category_1,String week){
         def cat2_other = new ArrayList()
-        def cat_2 = sqlClient.client.rows("select  sum(q.quantity) as quantity (select category_2,sum(quantity) as quantity ,row_number() over() as id from stg.d_mars_cat1_week_quantity where category_1 = ${category_1} group by category_2 order by quantity desc limit 10) q where q.id>10 ")
+        def cat_2 = sqlClient.client.rows("select  sum(q.quantity) as quantity from (select category_2,sum(quantity) as quantity ,row_number() over() as id from stg.d_mars_cat2_week_quantity where category_1 = ${category_1} group by category_2 order by quantity desc limit 10) q where q.id>10 ")
 
         cat2_other.add(cat_2)
-        return cat2_other
+        println(cat2_other)
+        return cat2_other.get(0)
     }
 
-    def GetProductOtherWeekQuantity(){
+    def GetProductOtherWeekQuantity(String category_1,String category_2,String week){
         def product = new ArrayList()
-        def pro = sqlClient.client.rows("select  sum(q.quantity) as quantity (select product_name,sum(quantity) as quantity ,row_number() over() as id from stg.d_mars_cat1_week_quantity where category_1 = ${category_1} and category_2 = ${category_2} group by product_name order by quantity desc limit 10) q where q.id>10 ")
+        def pro = sqlClient.client.rows("select  sum(q.quantity) as quantity from (select product_name,sum(quantity) as quantity ,row_number() over() as id from stg.d_mars_product_week_quantity where category_1 = ${category_1} and category_2 = ${category_2} group by product_name order by quantity desc limit 10) q where q.id>10 ")
 
         product.add(pro)
-        return product
+        println(product)
+        return product.get(0)
     }
 
-    def GetCategory1Bottom10WeekQuantity(){
+    def GetCategory1Bottom10WeekQuantity(String week){
         def quantity_1 = new ArrayList()
         def cat_1 = sqlClient.client.rows("select category_1,sum(quantity) as quantity from stg.d_mars_cat1_week_quantity group by category_1 order by quantity asc limit 10")
 
         quantity_1.add(cat_1)
-        return quantity_1
+        return quantity_1.get(0)
     }
 
-    def GetCategory2Bottom10Quantity(){
+    def GetCategory2Bottom10WeekQuantity(String category_1,String week){
         def quantity_2 = new ArrayList()
-        def cat_2 = sqlClient.client.rows("select category_2,sum(quantity) as quantity from stg.d_mars_cat1_week_quantity where category_1 = ${category_1} group by category_2 order by quantity asc limit 10")
+        def cat_2 = sqlClient.client.rows("select category_2,sum(quantity) as quantity from stg.d_mars_cat2_week_quantity where category_1 = ${category_1} group by category_2 order by quantity asc limit 10")
 
         quantity_2.add(cat_2)
-        return quantity_2
+        return quantity_2.get(0)
     }
 
-    def GetProductBottom10Quantity(){
+    def GetProductBottom10WeekQuantity(String category_1,String category_2,String week){
         def product = new ArrayList()
-        def pro = sqlClient.client.rows("select product_name,sum(quantity) as quantity from stg.d_mars_cat1_week_quantity where category_1 = ${category_1} group by product_name order by quantity desc limit 10")
+        def pro = sqlClient.client.rows("select product_name,sum(quantity) as quantity from stg.d_mars_product_week_quantity where category_1 = ${category_1} and category_2 = ${category_2} group by product_name order by quantity desc limit 10")
 
         product.add(pro)
-        return  product
+        return  product.get(0)
     }
+
+    def GetCategory1Top10MonthQuantity(String week){
+        def quantity_1 = new ArrayList()
+        def cat_1 = sqlClient.client.rows("select category_1,sum(quantity) as quantity from stg.d_mars_cat1_month_quantity group by category_1 order by quantity desc limit 10")
+
+        quantity_1.add(cat_1)
+        println(quantity_1)
+        return quantity_1.get(0)
+    }
+
+    def GetCategory2Top10MonthQuantity(String category_1,String week){
+        def quantity_2 = new ArrayList()
+        def cat_2 = sqlClient.client.rows("select category_2,sum(quantity) as quantity from stg.d_mars_cat2_month_quantity where category_1 = ${category_1} group by category_2 order by quantity desc limit 10")
+
+        quantity_2.add(cat_2)
+        return quantity_2.get(0)
+    }
+
+    def GetProductTop10MonthQuantity(String category_1,String category_2,String week){
+        def product = new ArrayList()
+        def pro = sqlClient.client.rows("select product_name,sum(quantity) as quantity from stg.d_mars_product_month_quantity where category_1 = ${category_1} and category_2 = ${category_2} group by product_name order by quantity desc limit 10")
+
+        product.add(pro)
+        return  product.get(0)
+    }
+
+    def GetCategory1OtherMonthQuantity(String week){
+        def cat1_other = new ArrayList()
+        def cat_1 = sqlClient.client.rows("select  sum(q.quantity) as quantity from (select category_1,sum(quantity) as quantity ,row_number() over() as id from stg.d_mars_cat1_month_quantity  group by category_1 order by quantity desc limit 10) q where q.id>10 ")
+
+
+        cat1_other.add(cat_1)
+        println(cat1_other)
+        return cat1_other.get(0)
+    }
+
+    def GetCategory2OtherMonthQuantity(String category_1,String week){
+        def cat2_other = new ArrayList()
+        def cat_2 = sqlClient.client.rows("select  sum(q.quantity) as quantity from (select category_2,sum(quantity) as quantity ,row_number() over() as id from stg.d_mars_cat2_month_quantity where category_1 = ${category_1} group by category_2 order by quantity desc limit 10) q where q.id>10 ")
+
+        cat2_other.add(cat_2)
+        println(cat2_other)
+        return cat2_other.get(0)
+    }
+
+    def GetProductOtherMonthQuantity(String category_1,String category_2,String week){
+        def product = new ArrayList()
+        def pro = sqlClient.client.rows("select  sum(q.quantity) as quantity from (select product_name,sum(quantity) as quantity ,row_number() over() as id from stg.d_mars_product_month_quantity where category_1 = ${category_1} and category_2 = ${category_2} group by product_name order by quantity desc limit 10) q where q.id>10 ")
+
+        product.add(pro)
+        println(product)
+        return product.get(0)
+    }
+
+    def GetCategory1Bottom10MonthQuantity(String week){
+        def quantity_1 = new ArrayList()
+        def cat_1 = sqlClient.client.rows("select category_1,sum(quantity) as quantity from stg.d_mars_cat1_month_quantity group by category_1 order by quantity asc limit 10")
+
+        quantity_1.add(cat_1)
+        return quantity_1.get(0)
+    }
+
+    def GetCategory2Bottom10MonthQuantity(String category_1,String week){
+        def quantity_2 = new ArrayList()
+        def cat_2 = sqlClient.client.rows("select category_2,sum(quantity) as quantity from stg.d_mars_cat2_month_quantity where category_1 = ${category_1} group by category_2 order by quantity asc limit 10")
+
+        quantity_2.add(cat_2)
+        return quantity_2.get(0)
+    }
+
+   def GetProductBottom10MonthQuantity(String category_1,String category_2,String week){
+       def product = new ArrayList()
+       def pro = sqlClient.client.rows("select product_name,sum(quantity) as quantity from stg.d_mars_product_month_quantity where category_1 = ${category_1} and category_2 = ${category_2} group by product_name order by quantity desc limit 10")
+
+       product.add(pro)
+       return  product.get(0)
+   }
 
 }
