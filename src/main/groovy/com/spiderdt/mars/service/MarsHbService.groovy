@@ -31,7 +31,8 @@ class MarsHbService  {
 
     def getCategory1Top10WeekHb(String week){
         def hb_1 = new ArrayList()
-        def cat_1 = sqlClient.client.rows("select category_1,sum(hb) as hb from stg.d_mars_cat1_week_hb group by category_1 order by hb desc limit 10");
+        //def cat_1 = sqlClient.client.rows("select category_1,sum(hb) as hb from stg.d_mars_cat1_week_hb group by category_1 order by hb desc limit 10");
+        def cat_1 = sqlClient.client.rows("select * from stg.d_mars_cat1_week_hb  order by hb desc limit 10");
 
         hb_1.add(cat_1)
         println(hb_1)
@@ -41,7 +42,7 @@ class MarsHbService  {
 
     def getCategory2Top10WeekHb(String category_1,String week){
         def hb_2 = new ArrayList()
-        def cat_2 = sqlClient.client.rows("select category_2,sum(hb) as hb  from stg.d_mars_cat2_week_hb where category_1 = ${category_1}  and hb is not null group by category_2  order by hb desc limit 10 ");
+        def cat_2 = sqlClient.client.rows("select category_2, hb  from stg.d_mars_cat2_week_hb where category_1 = ${category_1}  and hb is not null  order by hb desc limit 10 ");
 
         hb_2.add(cat_2)
         println(hb_2)
@@ -51,7 +52,7 @@ class MarsHbService  {
 
     def getProductTop10WeekHb(String category_1,String category_2,String week){
         def pro = new ArrayList()
-        def product = sqlClient.client.rows("select product_name,sum(hb) as hb from stg.d_mars_product_week_hb where category_1 = ${category_1} and category_2 = ${category_2} and hb is not null group by product_name order by hb desc limit 10");
+        def product = sqlClient.client.rows("select product_name, hb from stg.d_mars_product_week_hb where category_1 = ${category_1} and category_2 = ${category_2} and hb is not null  order by hb desc limit 10");
 
          pro.add(product)
          println(pro)
@@ -61,7 +62,7 @@ class MarsHbService  {
 
     def getCategory1Bottom10WeekHb(String week){
         def hb_1 = new ArrayList()
-        def cat_1 = sqlClient.client.rows("select * from stg.d_mars_cat1_week_hb order by hb limit 10");
+        def cat_1 = sqlClient.client.rows("select * from stg.d_mars_cat1_week_hb  order by hb asc limit 10");
 
         hb_1.add(cat_1)
         println(hb_1)
@@ -72,7 +73,7 @@ class MarsHbService  {
 
     def getCategory2Bottom10WeekHb(String category_1,String week){
         def hb_2 = new ArrayList()
-        def cat_2 = sqlClient.client.rows("select category_2,sum(hb) as hb  from stg.d_mars_cat2_week_hb where category_1 = ${category_1} and hb is not null group by category_2 order by hb asc limit 10 ");
+        def cat_2 = sqlClient.client.rows("select category_2, hb  from stg.d_mars_cat2_week_hb where category_1 = ${category_1}  and hb is not null order by hb asc limit 10");
 
         hb_2.add(cat_2)
         println(hb_2)
@@ -82,7 +83,16 @@ class MarsHbService  {
 
     def getProductBottom10WeekHb(String category_1,String category_2,String week){
         def pro = new ArrayList()
-        def product = sqlClient.client.rows("select product_name,sum(hb) as hb from stg.d_mars_product_week_hb where category_1 = ${category_1} and category_2 = ${category_2} and hb is not null group by product_name order by hb asc limit 10");
+        def product = sqlClient.client.rows("select product_name, hb from stg.d_mars_product_week_hb where category_1 = ${category_1} and category_2 = ${category_2} and hb is not null  order by hb asc limit 10");
+
+        pro.add(product)
+        println(pro)
+        return pro.get(0)
+    }
+
+    def getSingleProductWeekHb(String category_1,String category_2,String product_name,String week){
+        def pro = new ArrayList()
+        def product = sqlClient.client.rows("select product_name, hb from stg.d_mars_product_week_hb where category_1 = ${category_1} and category_2 = ${category_2} and product_name = ${product_name} ");
 
         pro.add(product)
         println(pro)
@@ -98,7 +108,7 @@ class MarsHbService  {
 
     def getCategory1Top10MonthHb(String month){
         def hb_1 = new ArrayList()
-        def cat_1 = sqlClient.client.rows("select category_1,sum(hb) as hb from stg.d_mars_cat1_month_hb group by category_1 order by hb desc limit 10");
+        def cat_1 = sqlClient.client.rows("select * from stg.d_mars_cat1_month_hb  order by hb desc limit 10");
 
         hb_1.add(cat_1)
         println(hb_1)
@@ -108,7 +118,7 @@ class MarsHbService  {
 
     def getCategory2Top10MonthHb(String category_1,String month){
         def hb_2 = new ArrayList()
-        def cat_2 = sqlClient.client.rows("select category_2,sum(hb) as hb  from stg.d_mars_cat2_month_hb where category_1 = ${category_1}  and hb is not null group by category_2  order by hb desc limit 10");
+        def cat_2 = sqlClient.client.rows("select category_2, hb  from stg.d_mars_cat2_month_hb where category_1 = ${category_1}  and hb is not null  order by hb desc limit 10");
 
         hb_2.add(cat_2)
         println(hb_2)
@@ -118,7 +128,7 @@ class MarsHbService  {
 
     def getProductTop10MonthHb(String category_1,String category_2,String month){
         def pro = new ArrayList()
-        def product = sqlClient.client.rows("select product_name,sum(hb) as hb from stg.d_mars_product_month_hb where category_1 = ${category_1} and category_2 = ${category_2} and hb is not null group by product_name order by hb desc limit 10");
+        def product = sqlClient.client.rows("select product_name, hb from stg.d_mars_product_month_hb where category_1 = ${category_1} and category_2 = ${category_2} and hb is not null  order by hb desc limit 10");
 
         pro.add(product)
         println(pro)
@@ -128,7 +138,7 @@ class MarsHbService  {
 
     def getCategory1Bottom10MonthHb(String month){
         def hb_1 = new ArrayList()
-        def cat_1 = sqlClient.client.rows("select * from stg.d_mars_cat1_month_hb order by hb limit 10");
+        def cat_1 = sqlClient.client.rows("select * from stg.d_mars_cat1_month_hb  order by hb asc limit 10");
 
         hb_1.add(cat_1)
         println(hb_1)
@@ -139,7 +149,7 @@ class MarsHbService  {
 
     def getCategory2Bottom10MonthHb(String category_1,String month){
         def hb_2 = new ArrayList()
-        def cat_2 = sqlClient.client.rows("select category_2,sum(hb) as hb  from stg.d_mars_cat2_month_hb where category_1 = ${category_1} and hb is not null group by category_2 order by hb asc limit 10 ");
+        def cat_2 = sqlClient.client.rows("select category_2, hb  from stg.d_mars_cat2_month_hb where category_1 = ${category_1}  and hb is not null order by hb asc limit 10 ");
 
         hb_2.add(cat_2)
         println(hb_2)
@@ -149,7 +159,16 @@ class MarsHbService  {
 
     def getProductBottom10MonthHb(String category_1,String category_2,String month){
         def pro = new ArrayList()
-        def product = sqlClient.client.rows("select product_name,sum(hb) as hb from stg.d_mars_product_month_hb where category_1 = ${category_1} and category_2 = ${category_2} and hb is not null group by product_name order by hb asc limit 10");
+        def product = sqlClient.client.rows("select product_name, hb from stg.d_mars_product_month_hb where category_1 = ${category_1} and category_2 = ${category_2} and hb is not null  order by hb asc limit 10");
+
+        pro.add(product)
+        println(pro)
+        return pro.get(0)
+    }
+
+    def getSingleProductMonthHb(String category_1,String category_2,String product_name,String month){
+        def pro = new ArrayList()
+        def product = sqlClient.client.rows("select product_name, hb from stg.d_mars_product_month_hb where category_1 = ${category_1} and category_2 = ${category_2} and product_name = ${product_name} ");
 
         pro.add(product)
         println(pro)

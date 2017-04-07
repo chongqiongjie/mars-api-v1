@@ -29,9 +29,23 @@ class MarsHbController {
         def data = new HashMap()
         def category_1 = request.getParameter("category_1")
         def category_2 = request.getParameter("category_2")
+        def product_name = request.getParameter("product_name")
         def week = request.getParameter("week")
         def month = request.getParameter("month")
-        if(category_1 != null&category_2 != null){
+        if(category_1 != null&category_2 != null&product_name != null){
+            def top10_week_hb = marsHbService.getSingleProductWeekHb(category_1,category_2,product_name,week)
+            def bottom10_week_hb = marsHbService.getSingleProductWeekHb(category_1,category_2,product_name,week)
+            def top10_month_hb = marsHbService.getSingleProductMonthHb(category_1,category_2,product_name,week)
+            def bottom_10_month_hb = marsHbService.getSingleProductMonthHb(category_1,category_2,product_name,week)
+
+            data.put("top10_week_hb",top10_week_hb)
+            data.put("bottom10_week_hb",bottom10_week_hb)
+            data.put("top10_month_hb",top10_month_hb)
+            data.put("bottom_10_month_hb",bottom_10_month_hb)
+            response.put("status", "success")
+            response.put("data", data)
+            return ResponseEntity.status(HttpStatus.OK).body(response.toString())
+        } else if(category_1 != null&category_2 != null){
             def top10_week_hb =  marsHbService.getProductTop10WeekHb(category_1,category_2,week)
             def bottom10_week_hb = marsHbService.getProductBottom10WeekHb(category_1,category_2,week)
             def top10_month_hb = marsHbService.getProductTop10MonthHb(category_1,category_2,month)

@@ -15,7 +15,7 @@ class MarsQuantityService {
     private final String root = new ClassPathResource("psql/root.cert.pem").getURI().getPath()
 
 
-//   def sqlClient = openSqlClient("192.168.1.3", "5432", "ms", "spiderdt","C:\\setup\\pgadmin_ssl_pk8\\client.key.pk8","C:\\setup\\pgadmin_ssl_pk8\\client.cert.pem","C:\\setup\\pgadmin_ssl_pk8\\root.cert.pem")
+//   def sqlClient = openSqlClient("192.168.1.3", "10432", "ms", "spiderdt","C:\\setup\\pgadmin_ssl_pk8\\client.key.pk8","C:\\setup\\pgadmin_ssl_pk8\\client.cert.pem","C:\\setup\\pgadmin_ssl_pk8\\root.cert.pem")
 //    def openSqlClient(hostname, port, username, password,client_key,client,root) {
     def sqlClient = openSqlClient("192.168.1.3", "5432", "ms", "spiderdt")
     def openSqlClient(hostname, port, username, password) {
@@ -65,7 +65,7 @@ class MarsQuantityService {
 
     def GetCategory2OtherWeekQuantity(String category_1,String week){
         def cat2_other = new ArrayList()
-        def cat_2 = sqlClient.client.rows("select  sum(q.quantity) as quantity from (select category_2,sum(quantity) as quantity ,row_number() over() as id from stg.d_mars_cat2_week_quantity where category_1 = ${category_1} group by category_2 order by quantity desc limit 10) q where q.id>10 ")
+        def cat_2 = sqlClient.client.rows("select  sum(q.quantity) as quantity from (select category_2,sum(quantity) as quantity ,row_number() over() as id from stg.d_mars_cat2_week_quantity where category_1 = ${category_1} group by category_2 order by quantity desc limit 10) q where q.id>10")
 
         cat2_other.add(cat_2)
         println(cat2_other)
@@ -74,7 +74,7 @@ class MarsQuantityService {
 
     def GetProductOtherWeekQuantity(String category_1,String category_2,String week){
         def product = new ArrayList()
-        def pro = sqlClient.client.rows("select  sum(q.quantity) as quantity from (select product_name,sum(quantity) as quantity ,row_number() over() as id from stg.d_mars_product_week_quantity where category_1 = ${category_1} and category_2 = ${category_2} group by product_name order by quantity desc limit 10) q where q.id>10 ")
+        def pro = sqlClient.client.rows("select  sum(q.quantity) as quantity from (select product_name,sum(quantity) as quantity ,row_number() over() as id from stg.d_mars_product_week_quantity where category_1 = ${category_1} and category_2 = ${category_2} group by product_name order by quantity desc limit 10) q where q.id>10")
 
         product.add(pro)
         println(product)
@@ -99,7 +99,7 @@ class MarsQuantityService {
 
     def GetProductBottom10WeekQuantity(String category_1,String category_2,String week){
         def product = new ArrayList()
-        def pro = sqlClient.client.rows("select product_name,sum(quantity) as quantity from stg.d_mars_product_week_quantity where category_1 = ${category_1} and category_2 = ${category_2} group by product_name order by quantity desc limit 10")
+        def pro = sqlClient.client.rows("select product_name,sum(quantity) as quantity from stg.d_mars_product_week_quantity where category_1 = ${category_1} and category_2 = ${category_2} group by product_name order by quantity asc limit 10")
 
         product.add(pro)
         return  product.get(0)
