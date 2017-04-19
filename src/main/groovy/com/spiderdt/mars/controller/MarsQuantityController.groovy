@@ -20,13 +20,11 @@ class MarsQuantityController {
     @Autowired
     MarsQuantityService marsQuantityService
 
-    @Autowired
-    JSONObject response
-
     @RequestMapping(value = "/trend/quantity", method = RequestMethod.GET)
     @ResponseBody
 
     def getQuantityScore(HttpServletRequest request){
+        JSONObject response = new JSONObject()
         def data = new HashMap()
         def category_1 = request.getParameter("category_1")
         def category_2 = request.getParameter("category_2")

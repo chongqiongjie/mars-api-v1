@@ -107,7 +107,7 @@ class MarsQuantityService {
 
     def getSingleProductTop10WeekQuantity(String category_1,String category_2,String product_name,String week){
         def product = new ArrayList()
-        def pro = sqlClient.client.rows("select product_name, quantity from stg.d_mars_product_week_quantity where category_1 = ${category_1} and category_2 = ${category_2} and product_name = ${product_name} and quantity is not null  order by quantity desc limit 10")
+        def pro = sqlClient.client.rows("select product_name, quantity from stg.d_mars_product_week_quantity where category_1 = ${category_1} and category_2 = ${category_2} and product_name = ${product_name} and quantity is not null  order by quantity desc ")
 
         product.add(pro)
         return  product.get(0)
@@ -115,7 +115,7 @@ class MarsQuantityService {
    
     def getSingleProductBottom10WeekQuantity(String category_1,String category_2,String product_name,String week){
         def product = new ArrayList()
-        def pro = sqlClient.client.rows("select product_name, quantity from stg.d_mars_product_week_quantity where category_1 = ${category_1} and category_2 = ${category_2} and product_name = ${product_name} and quantity is not null  order by quantity asc limit 10")
+        def pro = sqlClient.client.rows("select product_name, quantity from stg.d_mars_product_week_quantity where category_1 = ${category_1} and category_2 = ${category_2} and product_name = ${product_name} and quantity is not null  order by quantity asc ")
 
         product.add(pro)
         return  product.get(0)
@@ -126,7 +126,7 @@ class MarsQuantityService {
         def cat_1 = sqlClient.client.rows("select category_1,sum(quantity) as quantity from stg.d_mars_cat1_month_quantity group by category_1 order by quantity desc limit 10")
 
         quantity_1.add(cat_1)
-        println(quantity_1)
+        //println(quantity_1)
         return quantity_1.get(0)
     }
 

@@ -20,12 +20,10 @@ class MarsHbController {
     @Autowired
     MarsHbService marsHbService
 
-    @Autowired
-    JSONObject response
-
     @RequestMapping(value = "/trend/product_hb", method = RequestMethod.GET)
     @ResponseBody
     def  getHbScore(HttpServletRequest request){
+        JSONObject response = new JSONObject()
         def data = new HashMap()
         def category_1 = request.getParameter("category_1")
         def category_2 = request.getParameter("category_2")

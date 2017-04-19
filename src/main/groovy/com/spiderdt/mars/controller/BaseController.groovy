@@ -20,12 +20,10 @@ import org.springframework.stereotype.Controller
 abstract class BaseController {
 
     @Autowired
-    JSONObject response
-
-    @Autowired
     CommonService commonService
 
     def processDataTemplate(AbstractDataHandler handler) {
+        JSONObject response = new JSONObject()
         try {
 
             handler.process()
@@ -42,6 +40,7 @@ abstract class BaseController {
     }
 
     def getCategoryTemplate(String url, String token) {
+        JSONObject response = new JSONObject()
         try {
             Object category = commonService.getCategory(url, token)
             response.put("status", "success")

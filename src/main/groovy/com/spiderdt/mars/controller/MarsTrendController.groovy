@@ -21,12 +21,11 @@ class MarsTrendController {
     @Autowired
     MarsTrendService marsTrendService
 
-    @Autowired
-    JSONObject response
 
     @RequestMapping(value = "/trend/category", method = RequestMethod.GET)
     @ResponseBody
     def getCategory(){
+        JSONObject response = new JSONObject()
          def data = marsTrendService.getCategory()
          response.put("status", "success")
          response.put("data", data)
@@ -36,12 +35,11 @@ class MarsTrendController {
     @RequestMapping(value = "/trend/trend_spline", method = RequestMethod.POST)
     @ResponseBody
     def getScore(@RequestBody Map<String, String> params){
+        JSONObject response = new JSONObject()
         def category_1 = params.get("category_1");
         def category_2 = params.get("category_2");
         def product_name = params.get("product_name");
-        println("1:" + category_1)
-        println("2:" + category_2)
-        println("3:" + product_name)
+
 
         if(category_1 ==null&category_2==null&product_name==null){
             def data =   marsTrendService.getAllScore()

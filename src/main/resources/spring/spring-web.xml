@@ -15,7 +15,6 @@
 	<context:component-scan base-package="com.spiderdt.mars.service" />
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"/>
 
-	<bean class="org.json.JSONObject" scope="prototype"/>
 	<bean class="com.spiderdt.mars.builder.SelectorArgsBuilder"/>
 	<bean class="com.spiderdt.mars.utils.JsonConverter"/>
 

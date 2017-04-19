@@ -20,12 +20,10 @@ class MarsTbController {
     @Autowired
     MarsTbService marsTbService
 
-    @Autowired
-    JSONObject response
-
     @RequestMapping(value = "/trend/product_tb", method = RequestMethod.GET)
     @ResponseBody
     def getTbScore(HttpServletRequest request){
+        JSONObject response = new JSONObject()
         def category_1 = request.getParameter("category_1");
         def category_2 = request.getParameter("category_2");
         if(category_1!=null&category_2 != null){
