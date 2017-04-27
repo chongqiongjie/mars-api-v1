@@ -12,7 +12,9 @@ class MarsTrendServiceTest extends BaseTest {
 
     @Test
     void testGetCategory() {
-        marsTrendService.getCategory();
+      marsTrendService.getCategory();
+        //marsTrendService.buildCategory();
+
     }
 
 

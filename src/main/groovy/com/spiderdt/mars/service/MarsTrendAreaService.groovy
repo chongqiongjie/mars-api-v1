@@ -37,7 +37,7 @@ class MarsTrendAreaService {
 
     def getCategory2Score(String category_1,String start_time,String end_time){
         def cat_2 = new ArrayList()
-        def category_2 = sqlClient.client.rows("select q.date, q.actual_date,sum(q.quantity) as quantity,sum(q.effect_ln_baseprice) as effect_ln_baseprice,sum(q.effect_debut) as effect_debut ,sum(q.effect_discount) as effect_discount,sum(q.effect_coupon) as effect_coupon,sum(q.other) as other,sum(actual) as actual from (select date,actual_date,category_1, sum(quantity) as quantity,sum(effect_ln_baseprice) as effect_ln_baseprice,sum(effect_debut) as effect_debut ,sum(effect_discount) as effect_discount,sum(effect_coupon) as effect_coupon,sum(other) as other,sum(actual) as actual from stg.d_mars_final_result where category_1 = ${category_1} and date between  ${start_time} and ${end_time} group by date,category_1,actual_date order by date) q group by date,actual_date order by date") ;
+        def category_2 = sqlClient.client.rows("select q.date, q.actual_date,sum(q.quantity) as quantity,sum(q.effect_ln_baseprice) as effect_ln_baseprice,sum(q.effect_debut) as effect_debut ,sum(q.effect_discount) as effect_discount,sum(q.effect_coupon) as effect_coupon,sum(q.other) as other,sum(actual) as actual from (select date,actual_date,category_2, sum(quantity) as quantity,sum(effect_ln_baseprice) as effect_ln_baseprice,sum(effect_debut) as effect_debut ,sum(effect_discount) as effect_discount,sum(effect_coupon) as effect_coupon,sum(other) as other,sum(actual) as actual from stg.d_mars_final_result where category_1 = ${category_1} and date between  ${start_time} and ${end_time} group by date,category_2,actual_date order by date) q group by date,actual_date order by date") ;
 
          cat_2.add(category_2)
         //println(score_1)
@@ -46,20 +46,22 @@ class MarsTrendAreaService {
 
     def getProductScore(String category_1,String category_2,String start_time,String end_time){
         def pro = new ArrayList()
-        def product = sqlClient.client.rows("select q.date, q.actual_date,sum(q.quantity) as quantity,sum(q.effect_ln_baseprice) as effect_ln_baseprice,sum(q.effect_debut) as effect_debut ,sum(q.effect_discount) as effect_discount,sum(q.effect_coupon) as effect_coupon,sum(q.other) as other,sum(actual) as actual from (select date,actual_date,category_1, sum(quantity) as quantity,sum(effect_ln_baseprice) as effect_ln_baseprice,sum(effect_debut) as effect_debut ,sum(effect_discount) as effect_discount,sum(effect_coupon) as effect_coupon,sum(other) as other,sum(actual) as actual from stg.d_mars_final_result where category_1 = ${category_1} and category_2 = ${category_2} and date between  ${start_time} and ${end_time} group by date,category_1,actual_date order by date) q group by date,actual_date order by date") ;
+        def product = sqlClient.client.rows("select q.date, q.actual_date,sum(q.quantity) as quantity,sum(q.effect_ln_baseprice) as effect_ln_baseprice,sum(q.effect_debut) as effect_debut ,sum(q.effect_discount) as effect_discount,sum(q.effect_coupon) as effect_coupon,sum(q.other) as other,sum(actual) as actual from (select date,actual_date,product_name, sum(quantity) as quantity,sum(effect_ln_baseprice) as effect_ln_baseprice,sum(effect_debut) as effect_debut ,sum(effect_discount) as effect_discount,sum(effect_coupon) as effect_coupon,sum(other) as other,sum(actual) as actual from stg.d_mars_final_result where category_1 = ${category_1} and category_2 = ${category_2} and date between  ${start_time} and ${end_time} group by date,product_name,actual_date order by date) q group by date,actual_date order by date") ;
 
         pro.add(product)
         return pro.get(0)
     }
-
+//
     def getSingleProductScore(String category_1,String category_2,String product_name,String start_time,String end_time){
         def single = new ArrayList()
-        def single_product = sqlClient.client.rows("select q.date, q.actual_date,sum(q.quantity) as quantity,sum(q.effect_ln_baseprice) as effect_ln_baseprice,sum(q.effect_debut) as effect_debut ,sum(q.effect_discount) as effect_discount,sum(q.effect_coupon) as effect_coupon,sum(q.other) as other,sum(actual) as actual from (select date,actual_date,category_1, sum(quantity) as quantity,sum(effect_ln_baseprice) as effect_ln_baseprice,sum(effect_debut) as effect_debut ,sum(effect_discount) as effect_discount,sum(effect_coupon) as effect_coupon,sum(other) as other,sum(actual) as actual from stg.d_mars_final_result where category_1 = ${category_1} and category_2 = ${category_2} and product_name = ${product_name} and date between  ${start_time} and ${end_time} group by date,category_1,actual_date order by date) q group by date,actual_date order by date") ;
+        def single_product = sqlClient.client.rows("select date,actual_date, sum(quantity) as quantity,sum(effect_ln_baseprice) as effect_ln_baseprice,sum(effect_debut) as effect_debut ,sum(effect_discount) as effect_discount,sum(effect_coupon) as effect_coupon,sum(other) as other,sum(actual) as actual from stg.d_mars_final_result where category_1 = ${category_1} and category_2 = ${category_2} and product_name = ${product_name} and date between  ${start_time} and ${end_time} group by date,actual_date order by date") ;
 
         single.add(single_product)
         println("single_product:" + single)
         return single.get(0)
     }
+
+
 
     def getCategory1MaxmonthScore() {
         def cat_1 = new ArrayList()
