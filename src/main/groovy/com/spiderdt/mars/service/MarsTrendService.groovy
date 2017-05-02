@@ -72,12 +72,14 @@ class MarsTrendService extends BaseService {
         def cat1 = new HashMap()
         def children = new ArrayList()
         a.collect {
-            [[cat1_id:it.get("cat1_id"), category_1:it.get("category_1")],[ cat2_id:it.get("cat2_id"), category_2:it.get("category_2"), pro_id:it.get("pro_id"), product_name:it.get("product_name")]]
+            [[id:it.get("cat1_id"), name:it.get("category_1")],[ cat2_id:it.get("cat2_id"), category_2:it.get("category_2"),pro_id:it.get("pro_id"), product_name:it.get("product_name")]]
         }.groupBy {
            it.get(0)
         }.each { k,v ->
-            cat1.put("name", k)
+           // println("k1:" + k)
+            cat1.put("item", k)
             map1[cat1] = v.collect{
+              // println("v1:" + it.get(1))
                 it.get(1)
             }
         }
@@ -87,15 +89,15 @@ class MarsTrendService extends BaseService {
         map1.each {
             def tmpMap = [:]
             def cat2 = new HashMap()
-
+             println("it:" + it.value)
             // 对 [cat2_id, category_2, pro_id, product_name] 进行分组后 groupby 结果放到 tmpMap 中
             it.value.collect {
-                [[cat2_id: it.get("cat2_id"), category_2:it.get("category_2")], [pro_id:it.get("pro_id"), product_name:it.get("product_name")]]
+               [[id: it.get("cat2_id"), name:it.get("category_2")], [id:it.get("pro_id"), name:it.get("product_name")]]
             }.groupBy {
                it.get(0)
             }.each {  k,v ->
-                //println("v:" + v)
-                cat2.put("name", k)
+                //println("k:" + k)
+                cat2.put("item", k)
                 cat2.put("children",v.collect{it[1]})
                 pro.add(cat2)
                 //println("pro:" + pro)
@@ -109,7 +111,7 @@ class MarsTrendService extends BaseService {
         cat1.put("children",pro)
        // println("cat1:" + cat1)
         children.add(cat1)
-        //println("children1:"+ children)
+        println("children1:"+ children)
         return children
 
 
@@ -120,7 +122,7 @@ class MarsTrendService extends BaseService {
 
     def getCategory1Score(String category_1)  {
         def score_1 = new ArrayList()
-        def cat_1 = sqlClient.client.rows("select q.date, q.actual_date,sum(q.quantity) as quantity,sum(q.effect_ln_baseprice) as effect_ln_baseprice,sum(q.effect_debut) as effect_debut ,sum(q.effect_discount) as effect_discount,sum(q.effect_coupon) as effect_coupon,sum(q.other) as other,sum(actual) as actual from (select date,actual_date,category_2, sum(quantity) as quantity,sum(effect_ln_baseprice) as effect_ln_baseprice,sum(effect_debut) as effect_debut ,sum(effect_discount) as effect_discount,sum(effect_coupon) as effect_coupon,sum(other) as other,sum(actual) as actual from stg.d_mars_final_result where category_1 = ${category_1}  group by date,category_2,actual_date order by date) q group by date,actual_date order by date");
+        def cat_1 = sqlClient.client.rows("select q.date, q.actual_date,sum(q.quantity) as quantity,sum(q.effect_ln_baseprice) as effect_ln_baseprice,sum(q.effect_debut) as effect_debut ,sum(q.effect_discount) as effect_discount,sum(q.effect_coupon) as effect_coupon,sum(q.other) as other,sum(actual) as actual from (select date,actual_date,category_2, sum(quantity) as quantity,sum(effect_ln_baseprice) as effect_ln_baseprice,sum(effect_debut) as effect_debut ,sum(effect_discount) as effect_discount,sum(effect_coupon) as effect_coupon,sum(other) as other,sum(actual) as actual from stg.mars_all_id where cat1_id = ${category_1}  group by date,category_2,actual_date order by date) q group by date,actual_date order by date");
 
 
         score_1.add(cat_1)
@@ -131,7 +133,7 @@ class MarsTrendService extends BaseService {
 
     def getCategory2Score(String category_1,String category_2){
         def score_2 = new ArrayList()
-        def cat_2 = sqlClient.client.rows("select q.date,q.actual_date,sum(q.quantity) as quantity,sum(q.effect_ln_baseprice) as effect_ln_baseprice,sum(q.effect_debut) as effect_debut ,sum(q.effect_discount) as effect_discount,sum(q.effect_coupon) as effect_coupon,sum(q.other) as other,sum(actual) as actual from (select date, actual_date,product_name,sum(quantity) as quantity,sum(effect_ln_baseprice) as effect_ln_baseprice,sum(effect_debut) as effect_debut ,sum(effect_discount) as effect_discount,sum(effect_coupon) as effect_coupon,sum(other) as other,sum(actual) as actual from stg.d_mars_final_result where category_1 = ${category_1} and category_2 = ${category_2} group by date,product_name,actual_date order by date) q group by date ,actual_date order by date ") ;
+        def cat_2 = sqlClient.client.rows("select q.date,q.actual_date,sum(q.quantity) as quantity,sum(q.effect_ln_baseprice) as effect_ln_baseprice,sum(q.effect_debut) as effect_debut ,sum(q.effect_discount) as effect_discount,sum(q.effect_coupon) as effect_coupon,sum(q.other) as other,sum(actual) as actual from (select date, actual_date,product_name,sum(quantity) as quantity,sum(effect_ln_baseprice) as effect_ln_baseprice,sum(effect_debut) as effect_debut ,sum(effect_discount) as effect_discount,sum(effect_coupon) as effect_coupon,sum(other) as other,sum(actual) as actual from stg.mars_all_id where cat1_id = ${category_1} and cat2_id = ${category_2} group by date,product_name,actual_date order by date) q group by date ,actual_date order by date ") ;
 
         score_2.add(cat_2)
         return score_2.get(0)
@@ -140,7 +142,7 @@ class MarsTrendService extends BaseService {
 
     def getProductScore(String category_1,String category_2, String product_name){
         def pro = new ArrayList()
-        def product = sqlClient.client.rows("select  date,actual_date, sum(quantity) as quantity,sum(effect_ln_baseprice) as effect_ln_baseprice,sum(effect_debut) as effect_debut ,sum(effect_discount) as effect_discount,sum(effect_coupon) as effect_coupon,sum(other) as other,sum(actual) as actual from stg.d_mars_final_result where category_1 = ${category_1} and category_2 = ${category_2} and product_name = ${product_name} group by date,actual_date order by date") ;
+        def product = sqlClient.client.rows("select  date,actual_date, sum(quantity) as quantity,sum(effect_ln_baseprice) as effect_ln_baseprice,sum(effect_debut) as effect_debut ,sum(effect_discount) as effect_discount,sum(effect_coupon) as effect_coupon,sum(other) as other,sum(actual) as actual from stg.mars_all_id where cat1_id = ${category_1} and cat2_id = ${category_2} and pro_id = ${product_name} group by date,actual_date order by date") ;
 
 
         pro.add(product)
@@ -151,7 +153,7 @@ class MarsTrendService extends BaseService {
 
     def getAllScore(){
         def all = new ArrayList()
-        def a = sqlClient.client.rows("select q.date, q.actual_date,sum(q.quantity) as quantity,sum(q.effect_ln_baseprice) as effect_ln_baseprice,sum(q.effect_debut) as effect_debut ,sum(q.effect_discount) as effect_discount,sum(q.effect_coupon) as effect_coupon,sum(q.other) as other,sum(actual) as actual from (select date,actual_date,category_1, sum(quantity) as quantity,sum(effect_ln_baseprice) as effect_ln_baseprice,sum(effect_debut) as effect_debut ,sum(effect_discount) as effect_discount,sum(effect_coupon) as effect_coupon,sum(other) as other,sum(actual) as actual from stg.d_mars_final_result  group by date,category_1,actual_date order by date) q group by date,actual_date order by date") ;
+        def a = sqlClient.client.rows("select q.date, q.actual_date,sum(q.quantity) as quantity,sum(q.effect_ln_baseprice) as effect_ln_baseprice,sum(q.effect_debut) as effect_debut ,sum(q.effect_discount) as effect_discount,sum(q.effect_coupon) as effect_coupon,sum(q.other) as other,sum(actual) as actual from (select date,actual_date,category_1, sum(quantity) as quantity,sum(effect_ln_baseprice) as effect_ln_baseprice,sum(effect_debut) as effect_debut ,sum(effect_discount) as effect_discount,sum(effect_coupon) as effect_coupon,sum(other) as other,sum(actual) as actual from stg.mars_all_id  group by date,category_1,actual_date order by date) q group by date,actual_date order by date") ;
         all.add(a)
         return all.get(0)
     }

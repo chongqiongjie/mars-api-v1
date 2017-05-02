@@ -10,6 +10,7 @@ package com.spiderdt.mars.service
  */
 import groovy.json.JsonSlurper
 import groovyx.net.http.AsyncHTTPBuilder
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 
 import static groovyx.net.http.Method.GET
@@ -19,14 +20,15 @@ import static groovyx.net.http.ContentType.JSON
 import static groovyx.net.http.ContentType.TEXT
 @Service
 class HttpClientService {
-//    static http = new AsyncHTTPBuilder(poolSize: 30, uri: "https://10.212.36.41")
-    static http = new AsyncHTTPBuilder(poolSize: 30, uri: "https://192.168.1.2")
+    private static String clientUrl = "https://192.168.1.2"
+    static http = new AsyncHTTPBuilder(poolSize: 30, uri:clientUrl)
     static {
         http.ignoreSSLIssues()
         http.setTimeout(10000)
     }
 
-    def static createToken(String basic, String username, String password) {
+
+    def  createToken(String basic, String username, String password) {
         def future = http.request(POST, JSON) { req ->
             headers.clear()
             headers.'Authorization' = "Basic " + basic.bytes.encodeBase64().toString()
@@ -41,7 +43,8 @@ class HttpClientService {
         while (!future.done) {
             Thread.sleep(100)
         }
-        future.get()
+        def res =  future.get()
+        return res
     }
 
 
