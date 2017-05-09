@@ -30,12 +30,19 @@ class MarsCombinePlanService {
 
 
 
-    def combine(String name){
-        println("name:" + name)
-        def combine =  sqlClient.client.rows("select result from ods.mars_show_subplan where name in (${name})")
-        println("sql:" + "select result from ods.mars_show_subplan where name in (${name})")
+    def combine(List nameList){
+        println("list:" + nameList)
+        String sql = "select result from ods.mars_show_subplan where name in ("
+        nameList.collect{
+            sql = sql + "'$it',"
+            println("sql:" + sql )
+        }
+        sql = sql.substring(0, sql.length() - 1) + ")"
+        println("sql:" + sql)
+
+        def combine =  sqlClient.client.rows(sql)
         println("combine:" + combine)
-        return combine
+        return 0
  }
 
 

@@ -95,7 +95,7 @@ class MarsTrendAreaService {
         def pro_max = sqlClient.client.rows("select avg(price) as price,avg(effect_ln_baseprice) as effect_ln_baseprice,avg(effect_debut) as effect_debut,avg(effect_discount) as effect_discount,avg(effect_coupon) as effect_coupon from  ods.mars_max_month_avg_single_product  where cat1_id = ${cat1_id} and cat2_id = ${cat2_id} and ppg_id = ${ppg_id} ")
 
         pro_single.add(pro_max)
-        println("pro_max" + pro_single)
+        println("pro_max11111" + pro_single)
         return pro_single.get(0)[0]
     }
 

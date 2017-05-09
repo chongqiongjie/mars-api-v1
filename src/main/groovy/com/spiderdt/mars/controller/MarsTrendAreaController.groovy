@@ -36,9 +36,13 @@ class MarsTrendAreaController {
 //        def start_time = request.getParameter("start_time")
 //        def end_time = request.getParameter("end_time")
 
+//        println "null".equals(category_1)
+//        println "null".equals(category_2)
+//        println "null".equals(product_name)
 
 
-        if(category_1 ==null&category_2==null&product_name==null){
+
+        if("null".equals(category_1)&&"null".equals(category_2)&&"null".equals(product_name)){
             //def area_cat =  marsTrendAreaService.getCategory1Score(start_time,end_time)
             def avg_cat = marsTrendAreaService.getCategory1MaxmonthScore()
 
@@ -47,7 +51,7 @@ class MarsTrendAreaController {
             response.put("status", "success")
             response.put("data", data)
             return ResponseEntity.status(HttpStatus.OK).body(response.toString())
-        }else if(category_1 !=null&category_2==null&product_name==null){
+        }else if(!"null".equals(category_1)&&"null".equals(category_2)&&"null".equals(product_name)){
             //def area_cat = marsTrendAreaService.getCategory2Score(category_1,start_time,end_time)
             def avg_cat = marsTrendAreaService.getCategory2MaxmonthScore(category_1)
 
@@ -56,7 +60,7 @@ class MarsTrendAreaController {
             response.put("status", "success")
             response.put("data", data)
             return ResponseEntity.status(HttpStatus.OK).body(response.toString())
-        }else if(category_1 !=null&category_2 !=null&product_name==null){
+        }else if(!"null".equals(category_1)&&!"null".equals(category_2)&&"null".equals(product_name)){
             //def area_cat  = marsTrendAreaService.getProductScore(category_1,category_1,start_time,end_time)
             def avg_cat = marsTrendAreaService.getProductMaxmonthScore(category_1,category_2)
 
@@ -65,7 +69,7 @@ class MarsTrendAreaController {
             response.put("status", "success")
             response.put("data", data)
             return ResponseEntity.status(HttpStatus.OK).body(response.toString())
-        }else if(category_1 !=null&category_2 !=null&product_name !=null){
+        }else if(!"null".equals(category_1)&&!"null".equals(category_2)&&!"null".equals(product_name)){
             //def area_cat = marsTrendAreaService.getSingleProductScore(category_1,category_2,product_name,start_time,end_time)
             def avg_cat = marsTrendAreaService.getSingleProductMaxmonthScore(category_1,category_2,product_name)
 
