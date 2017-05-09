@@ -1,16 +1,19 @@
 package com.spiderdt.mars.service
 
 import groovy.sql.Sql
+import groovyx.net.http.AsyncHTTPBuilder
 import org.postgresql.ds.PGPoolingDataSource
 import org.springframework.core.io.ClassPathResource
 import org.springframework.stereotype.Service
 
+import static groovyx.net.http.ContentType.JSON
+import static groovyx.net.http.Method.POST
+
 /**
- * Created by chong on 2017/4/13.
+ * Created by chong on 2017/5/8.
  */
 @Service
-class MarsListSubplanService {
-
+class MarsCombinePlanService {
     private final String client_key = new ClassPathResource("psql/client.key.pk8").getURI().getPath()
     private final String client = new ClassPathResource("psql/client.cert.pem").getURI().getPath()
     private final String root = new ClassPathResource("psql/root.cert.pem").getURI().getPath()
@@ -25,11 +28,17 @@ class MarsListSubplanService {
         [client: client3, args: [hostname:hostname, port:port, username:username, password:password]]
     }
 
-    def ListSubplan(){
-        def list = new ArrayList()
-        def data = sqlClient.client.rows("select id,name,create_user,start_time,end_time,exec_time,exec_status,is_collected from ods.mars_create_subplan order by id desc")
 
-        list.add(data)
-        return list.get(0)
+
+    def combine(String name){
+        println("name:" + name)
+        def combine =  sqlClient.client.rows("select result from ods.mars_show_subplan where name in (${name})")
+        println("sql:" + "select result from ods.mars_show_subplan where name in (${name})")
+        println("combine:" + combine)
+        return combine
+ }
+
+
+
     }
-}
+

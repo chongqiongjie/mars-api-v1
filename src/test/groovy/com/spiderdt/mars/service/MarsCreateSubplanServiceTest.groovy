@@ -18,11 +18,11 @@ class MarsCreateSubplanServiceTest extends BaseTest{
         def product_name = "铲子"
         def start_time = "2016-02-02"
         def end_time = "2016-02-09"
-        def price = "20"
-        def discount = "8"
-        def coupon = "10"
-        def effect_ln_baseprice = "8"
-        def debut = "2"
+        def price = 20
+        def discount = 8
+        def coupon = 10
+        def effect_ln_baseprice = 8
+        def debut = 2
 
 
 

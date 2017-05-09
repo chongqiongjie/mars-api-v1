@@ -21,51 +21,55 @@ class MarsTrendAreaController {
     MarsTrendAreaService marsTrendAreaService
 
 
-    @RequestMapping(value = "/createplan/trendarea ", method = RequestMethod.GET)
+    @RequestMapping(value = "/createplan/trendarea", method = RequestMethod.GET)
     @ResponseBody
     def getTrendAreaScore(HttpServletRequest request){
         JSONObject response = new JSONObject()
         def data = new HashMap()
         def category_1 = request.getParameter("category_1")
+        println("cat1++:" + category_1)
         def category_2 = request.getParameter("category_2")
+        println("cat2++:" + category_2)
         def product_name = request.getParameter("product_name")
-        def start_time = request.getParameter("start_time")
-        def end_time = request.getParameter("end_time")
+        println("pro++:" + product_name)
+
+//        def start_time = request.getParameter("start_time")
+//        def end_time = request.getParameter("end_time")
 
 
 
         if(category_1 ==null&category_2==null&product_name==null){
-            def area_cat =   marsTrendAreaService.getCategory1Score(start_time,end_time)
+            //def area_cat =  marsTrendAreaService.getCategory1Score(start_time,end_time)
             def avg_cat = marsTrendAreaService.getCategory1MaxmonthScore()
 
-            data.put("area_cat",area_cat)
+            //data.put("area_cat",area_cat)
             data.put("avg_cat",avg_cat)
             response.put("status", "success")
             response.put("data", data)
             return ResponseEntity.status(HttpStatus.OK).body(response.toString())
         }else if(category_1 !=null&category_2==null&product_name==null){
-            def area_cat = marsTrendAreaService.getCategory2Score(category_1,start_time,end_time)
+            //def area_cat = marsTrendAreaService.getCategory2Score(category_1,start_time,end_time)
             def avg_cat = marsTrendAreaService.getCategory2MaxmonthScore(category_1)
 
-            data.put("area_cat",area_cat)
+            //data.put("area_cat",area_cat)
             data.put("avg_cat",avg_cat)
             response.put("status", "success")
             response.put("data", data)
             return ResponseEntity.status(HttpStatus.OK).body(response.toString())
         }else if(category_1 !=null&category_2 !=null&product_name==null){
-            def area_cat  = marsTrendAreaService.getProductScore(category_1,category_1,start_time,end_time)
+            //def area_cat  = marsTrendAreaService.getProductScore(category_1,category_1,start_time,end_time)
             def avg_cat = marsTrendAreaService.getProductMaxmonthScore(category_1,category_2)
 
-            data.put("area_cat",area_cat)
+            //data.put("area_cat",area_cat)
             data.put("avg_cat",avg_cat)
             response.put("status", "success")
             response.put("data", data)
             return ResponseEntity.status(HttpStatus.OK).body(response.toString())
         }else if(category_1 !=null&category_2 !=null&product_name !=null){
-            def area_cat = marsTrendAreaService.getSingleProductScore(category_1,category_2,product_name,start_time,end_time)
+            //def area_cat = marsTrendAreaService.getSingleProductScore(category_1,category_2,product_name,start_time,end_time)
             def avg_cat = marsTrendAreaService.getSingleProductMaxmonthScore(category_1,category_2,product_name)
 
-            data.put("area_cat",area_cat)
+            //data.put("area_cat",area_cat)
             data.put("avg_cat",avg_cat)
             response.put("status", "success")
             response.put("data", data)

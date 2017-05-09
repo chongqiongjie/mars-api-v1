@@ -45,6 +45,12 @@ class MarsTrendAreaServiceTest extends BaseTest {
         marsTrendAreaService.getSingleProductScore(category_1,category_2,product_name,start_time,end_time)
     }
 
+
+
+
+
+
+
     @Test
     void getCategory1MaxmonthTest(){
         marsTrendAreaService.getCategory1MaxmonthScore()
@@ -52,23 +58,23 @@ class MarsTrendAreaServiceTest extends BaseTest {
 
     @Test
     void getCategory2MaxmonthTest(){
-        def category_1 = "1.0000000000000000"
-        marsTrendAreaService.getCategory2MaxmonthScore(category_1)
+        def cat1_id = "1"
+        marsTrendAreaService.getCategory2MaxmonthScore(cat1_id)
     }
 
 
     @Test
     void getProductMaxmonthTest(){
-        def category_1 = "1.0000000000000000"
-        def category_2 = "1.0000000000000000"
-        marsTrendAreaService.getProductMaxmonthScore(category_1,category_2)
+        def cat1_id = "1"
+        def cat2_id = "1"
+        marsTrendAreaService.getProductMaxmonthScore(cat1_id,cat2_id)
     }
 
     @Test
     void getSingleProductMaxmonthTest(){
-        def category_1 = "1.0000000000000000"
-        def category_2 = "1.0000000000000000"
-        def product_name = "tutuanna短袜 女士夏季新款纯色花边女袜 日系 清新 舒适 棉袜"
-        marsTrendAreaService.getSingleProductMaxmonthScore(category_1,category_2,product_name)
+        def cat1_id = "1"
+        def cat2_id= "1"
+        def ppd_id = "102"
+        marsTrendAreaService.getSingleProductMaxmonthScore(cat1_id,cat2_id,ppd_id)
     }
 }

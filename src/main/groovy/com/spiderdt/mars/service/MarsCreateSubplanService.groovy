@@ -42,16 +42,13 @@ class MarsCreateSubplanService {
 //    }
 
 
-    def createSubplan(String name,String category_1,String category_2,String product_name,String start_time,String end_time,String price,String discount,String coupon,String effect_ln_baseprice,String debut){
+    def createSubplan(String name,String category_1,String category_2,String product_name,String start_time,String end_time,Double price,Double discount,Double coupon,Double effect_ln_baseprice,Double debut){
         try {
              sqlClient.client.executeInsert("insert into ods.mars_create_subplan (name , category_1 , category_2 , product_name , start_time , end_time , create_time , exec_time, exec_status,price ,discount , coupon ,effect_ln_baseprice ,  debut,is_collected) values (${name},${category_1},${category_2},${product_name},${start_time},${end_time},now()::timestamp(0)without time zone,now()::timestamp(0)without time zone,1,${price},${discount},${coupon},${effect_ln_baseprice},${debut},0)")
         } catch (PSQLException e) {
             return [status:"create_failure", message:e.message]
         }
-        return "create_success"
+        return [status: "success"]
     }
-
-
-
 
 }

@@ -66,13 +66,13 @@ class MarsTrendService extends BaseService {
 
 
     def getCategory() {
-        def a =  sqlClient.client.rows("select cat1_id,category_1,cat2_id,category_2,pro_id,product_name from stg.mars_all_id GROUP BY cat1_id,category_1,cat2_id,category_2,pro_id,product_name");
+        def a =  sqlClient.client.rows("select cat1_id,category_1,cat2_id,category_2,ppg_id,product_name from stg.mars_all_id GROUP BY cat1_id,category_1,cat2_id,category_2,ppg_id,product_name");
 
         def map1 = [:]
         def cat1 = new HashMap()
         def children = new ArrayList()
         a.collect {
-            [[id:it.get("cat1_id"), name:it.get("category_1")],[ cat2_id:it.get("cat2_id"), category_2:it.get("category_2"),pro_id:it.get("pro_id"), product_name:it.get("product_name")]]
+            [[id:it.get("cat1_id"), name:it.get("category_1")],[ cat2_id:it.get("cat2_id"), category_2:it.get("category_2"),ppg_id:it.get("ppg_id"), product_name:it.get("product_name")]]
         }.groupBy {
            it.get(0)
         }.each { k,v ->
@@ -92,7 +92,7 @@ class MarsTrendService extends BaseService {
              println("it:" + it.value)
             // 对 [cat2_id, category_2, pro_id, product_name] 进行分组后 groupby 结果放到 tmpMap 中
             it.value.collect {
-               [[id: it.get("cat2_id"), name:it.get("category_2")], [id:it.get("pro_id"), name:it.get("product_name")]]
+               [[id: it.get("cat2_id"), name:it.get("category_2")], [id:it.get("ppg_id"), name:it.get("product_name")]]
             }.groupBy {
                it.get(0)
             }.each {  k,v ->

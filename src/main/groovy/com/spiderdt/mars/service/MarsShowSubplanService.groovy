@@ -6,11 +6,10 @@ import org.springframework.core.io.ClassPathResource
 import org.springframework.stereotype.Service
 
 /**
- * Created by chong on 2017/4/13.
+ * Created by chong on 2017/5/8.
  */
 @Service
-class MarsListSubplanService {
-
+class MarsShowSubplanService {
     private final String client_key = new ClassPathResource("psql/client.key.pk8").getURI().getPath()
     private final String client = new ClassPathResource("psql/client.cert.pem").getURI().getPath()
     private final String root = new ClassPathResource("psql/root.cert.pem").getURI().getPath()
@@ -25,11 +24,11 @@ class MarsListSubplanService {
         [client: client3, args: [hostname:hostname, port:port, username:username, password:password]]
     }
 
-    def ListSubplan(){
-        def list = new ArrayList()
-        def data = sqlClient.client.rows("select id,name,create_user,start_time,end_time,exec_time,exec_status,is_collected from ods.mars_create_subplan order by id desc")
 
-        list.add(data)
-        return list.get(0)
+    def show(String name){
+        def result = sqlClient.client.rows("select result from ods.mars_show_subplan where name = ${name}")
+        println("result:" + result)
+        return result
     }
+
 }
