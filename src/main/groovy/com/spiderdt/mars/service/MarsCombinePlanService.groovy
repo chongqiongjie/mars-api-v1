@@ -30,7 +30,8 @@ class MarsCombinePlanService {
 
 
 
-    def combine(List nameList){
+    def
+    combine(List nameList){
         println("list:" + nameList)
         String sql = "select result from ods.mars_show_subplan where name in ("
         nameList.collect{
@@ -44,7 +45,6 @@ class MarsCombinePlanService {
         println("combine:" + combine)
         return 0
  }
-
 
 
     }

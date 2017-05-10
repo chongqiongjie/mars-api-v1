@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.ResponseBody
@@ -20,14 +21,16 @@ class MarsCombinePlanController {
     @Autowired
     MarsCombinePlanService marsCombinePlanService
 
-    @RequestMapping(value = "/createplan/combinesubplan", method = RequestMethod.GET)
+    @RequestMapping(value = "/createplan/combinesubplan", method = RequestMethod.POST)
     @ResponseBody
-    def Combine(HttpServletRequest request){
+    def Combine(@RequestBody Map<String,List[]> params){
         JSONObject response = new JSONObject()
         def data = new HashMap()
-        def name = request.getParameter("name")
-        def result = marsCombinePlanService.combine(name)
+        def name = params.get("name")
+        def subplans = params.get("subplans")
+        def result = marsCombinePlanService.combine(subplans)
 
+        data.put("name",name)
         data.put("result",result)
         response.put("status","success")
         response.put("data",data)
