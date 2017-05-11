@@ -23,7 +23,7 @@ class MarsCombinePlanController {
 
     @RequestMapping(value = "/createplan/combinesubplan", method = RequestMethod.POST)
     @ResponseBody
-    def Combine(@RequestBody Map<String,List[]> params){
+    def Combine(@RequestBody Map<String,Object> params){
         JSONObject response = new JSONObject()
         def data = new HashMap()
         def name = params.get("name")

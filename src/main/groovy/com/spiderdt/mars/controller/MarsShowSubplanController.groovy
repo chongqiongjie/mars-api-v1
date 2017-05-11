@@ -27,6 +27,7 @@ class MarsShowSubplanController {
         String name = request.getParameter("name")
         def result =  marsShowSubplanService.show(name)
 
+        response.put("status","success")
         response.put("result",result)
         return ResponseEntity.status(HttpStatus.OK).body(response.toString())
     }

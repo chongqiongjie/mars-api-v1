@@ -26,9 +26,8 @@ class MarsShowSubplanService {
 
 
     def show(String name){
-        def result = sqlClient.client.rows("select result from ods.mars_show_subplan where name = ${name}")
-        println("result:" + result)
-        return result
+        def result = sqlClient.client.rows("select result from ods.mars_show_subplan where name = ${name}")*.result
+        return result.get(0)
     }
 
 }

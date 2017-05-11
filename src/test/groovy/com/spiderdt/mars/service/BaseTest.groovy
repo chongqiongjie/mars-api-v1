@@ -33,6 +33,6 @@ class BaseTest extends GroovyTestCase{
 
     @Before
     void setUp() {
-        token =  httpClientService.createToken(basic, username, password).id
+//        token =  httpClientService.createToken(basic, username, password).id
     }
 }

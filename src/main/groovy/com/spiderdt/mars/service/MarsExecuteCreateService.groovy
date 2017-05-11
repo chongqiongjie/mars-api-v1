@@ -1,5 +1,6 @@
 package com.spiderdt.mars.service
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import groovy.sql.Sql
 import groovyx.net.http.AsyncHTTPBuilder
 import groovyx.net.http.HttpResponseException
@@ -59,14 +60,18 @@ class MarsExecuteCreateService {
             Thread.sleep(100)
         }
         try{
-            String res = future.get()
-            println("res:" + res)
-            if(res.startsWith("ERROR")){
+            def res = future.get()
+            //println("res:" + res)
+            //println("res:" + res.class)
+            ObjectMapper mapper = new ObjectMapper()
+            def resJson = mapper.writeValueAsString(res)
+            println(resJson)
+            if(res.toString().startsWith("ERROR")){
                 def a =  sqlClient.client.executeUpdate("update ods.mars_create_subplan set exec_status = '0' where exec_status = '1' and name = ${name}")
                 println("a:" + a)
             }else {
                 def b =  sqlClient.client.executeUpdate("update ods.mars_create_subplan set exec_status = '2' where exec_status = '1' and name = ${name}")
-                def insert = sqlClient.client.executeInsert("insert into ods.mars_show_subplan (name,result) values (${name},${res})")
+                def insert = sqlClient.client.executeInsert("insert into ods.mars_show_subplan (name,result) values (${name},${resJson})")
                 println("b:" + b)
                 println("insert:" + insert)
             }
