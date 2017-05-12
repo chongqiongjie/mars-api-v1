@@ -25,15 +25,14 @@ class MarsCombinePlanController {
     @ResponseBody
     def Combine(@RequestBody Map<String,Object> params){
         JSONObject response = new JSONObject()
-        def data = new HashMap()
         def name = params.get("name")
-        def subplans = params.get("subplans")
-        def result = marsCombinePlanService.combine(subplans)
+        def start_time = params.get("begin_time")
+        def end_time = params.get("end_time")
+        List subplans = params.get("subplans")
+        println("subplans:" + subplans)
+        def result = marsCombinePlanService.combine(name,subplans,start_time,end_time)
 
-        data.put("name",name)
-        data.put("result",result)
-        response.put("status","success")
-        response.put("data",data)
+        response.put("status",result)
         return ResponseEntity.status(HttpStatus.OK).body(response.toString())
     }
 }

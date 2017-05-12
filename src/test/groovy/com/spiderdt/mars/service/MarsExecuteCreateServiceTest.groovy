@@ -22,4 +22,7 @@ class MarsExecuteCreateServiceTest extends BaseTest{
         def drivers = [coupon:1,price:1,ln_baseprice:1,debut:1,discount:1]
         marsExecuteCreateService.create(url,name,category,group,product,start_time,end_time,drivers)
     }
-}
+
+
+    }
+

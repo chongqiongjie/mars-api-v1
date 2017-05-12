@@ -13,7 +13,11 @@ class MarsCombinePlanTest extends BaseTest{
 
     @Test
     void combine(){
-        def list = ['123','1']
-        marsCombinePlanService.combine(list)
+        def name  = "ffff"
+        def list = ["计划1","test1"]
+        def start_time = "2016-12-14"
+        def end_time = "2016-12-25"
+        marsCombinePlanService.combine(name,list,start_time,end_time)
     }
+
 }

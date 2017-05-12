@@ -61,8 +61,6 @@ class MarsExecuteCreateService {
         }
         try{
             def res = future.get()
-            //println("res:" + res)
-            //println("res:" + res.class)
             ObjectMapper mapper = new ObjectMapper()
             def resJson = mapper.writeValueAsString(res)
             println(resJson)

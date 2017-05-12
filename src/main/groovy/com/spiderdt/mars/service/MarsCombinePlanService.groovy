@@ -34,40 +34,39 @@ class MarsCombinePlanService {
     }
 
 
-    def combine(List nameList) {
-        println("list:" + nameList)
-        String sql = "select result from ods.mars_show_subplan where name in ("
-        nameList.collect {
-            sql = sql + "'$it',"
+    def combine(String name,List nameList,String start_time,String end_time) {
+//            String sql = "select result from ods.mars_show_subplan where name in ("
+//            nameList.collect {
+//                println("it:" + it)
+//                sql = sql + "'$it',"
+//            }
+//            sql = sql.substring(0, sql.length() - 1) + ")"
+//            def combine = sqlClient.client.rows(sql)
+//            println("combine:" + combine)
+//            //println("combine:" + combine.class)
+//
+//            def res = new ArrayList<Combine>()
+//            println("combine.get(0):" + combine.get(0))
+//            println("combine.get(0)+++:" + combine.get(0).get("result").toString())
+//            String jsonString = combine.get(0).get("result").toString()
+//            println("jsonString:" + jsonString)
+//            Gson gson = new Gson()
+//            def jsonList = gson.fromJson(jsonString, res.class)
+//
+//            println("jsonList:" + jsonList)
+//            println("jsonList:" + jsonList.size())
+//            jsonList.removeIf {
+//                //println("date:" + it.date)
+//                it.date< start_time || it.date > end_time
+//            }
+//             def result = gson.toJson(jsonList)
+             Gson gson = new Gson()
+             def subplanName = gson.toJson(nameList)
+             sqlClient.client.executeInsert("insert into ods.mars_combine_subplan (name,start_time,end_time,subplan_result) values (${name},${start_time},${end_time},${subplanName})")
+             return "success"
+//
+
         }
-        sql = sql.substring(0, sql.length() - 1) + ")"
-        // println("sql:" + sql)
-
-        def combine = sqlClient.client.rows(sql)
-        println("combine:" + combine.get(0))
-        def res = new ArrayList<Combine>()
-        String jsonString = (String)combine.get(0).get("result")
-
-//        ObjectMapper mapper = new ObjectMapper()
-//        String jsonList = mapper.readValue(jsonString, res.class)
-
-        Gson gson = new Gson()
-        def jsonList = gson.fromJson(jsonString, res.class)
-
-        println("jsonList:" + jsonList)
-        println("jsonList:" + jsonList.size())
-        String startTime = "2016-12-20"
-        String endTime = "2016-12-25"
-        jsonList.removeIf {
-            it.date < startTime || it.date > endTime
-        }
-        //println("jsonList:" + jsonList.size())
-        def result = gson.toJson(jsonList)
-        //println("result:" + result)
-
-        return result
-        }
-
 
     }
 
