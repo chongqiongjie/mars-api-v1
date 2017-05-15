@@ -31,18 +31,21 @@ class MarsDeleteSubplanService {
         def big_res =  sqlClient.client.rows("select subplan_result from ods.mars_combine_subplan ")*.subplan_result
         println("big_res:" + big_res)
         println("big_res:" + big_res.class)
-        boolean isAllowDelete = true
-        big_res.each {
-            Gson gson = new Gson()
-            def subplan_result = new ArrayList<String>()
-            def jsonList = gson.fromJson(it as String, subplan_result.class)
+        //Boolean isAllowDelete = true
+        try {
+            big_res.each {
+                Gson gson = new Gson()
+                def subplan_result = new ArrayList<String>()
+                def jsonList = gson.fromJson(it as String, subplan_result.class)
 
-
-            jsonList.each {
-                //println it
-                if (it == name) isAllowDelete = false
+                jsonList.each {
+                    //println it
+                    if (it == name) {return "success"}
+                }
             }
+
+        }catch (Exception e){
+            return e.printStackTrace()
         }
-        return isAllowDelete
     }
 }

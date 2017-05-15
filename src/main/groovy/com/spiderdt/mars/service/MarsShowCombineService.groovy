@@ -38,7 +38,6 @@ class MarsShowCombineService {
         def name = new ArrayList<String>()
         def a = gson.fromJson(sub_name, name.class)
 
-        println("a:" + a.class)
 
 
         def sql  = "select name,start_time,end_time,create_time,exec_time,exec_status from  ods.mars_create_subplan where name in ("

@@ -41,12 +41,15 @@ class MarsShowBigPlanService {
 
         String sql = "select result from ods.mars_show_subplan where name in ("
         jsonList.collect{
-            sql = sql + "'$it',"
+            def sub_name = it.get("name")
+            println("sub_name:" + sub_name)
+            sql = sql + "'$sub_name',"
         }
 
         def  sql_res = sql.substring(0, sql.length() - 1) + ")"
         println("sql_res:" + sql_res)
         def combine_res = sqlClient.client.rows(sql_res)
+        println("combine_res:" + combine_res)
         def bigplan_res = combine_res.get(0).get("result")
         println("bigplan_res:" + bigplan_res)
 
