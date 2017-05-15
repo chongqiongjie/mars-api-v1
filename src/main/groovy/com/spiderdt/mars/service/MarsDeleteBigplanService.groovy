@@ -1,16 +1,15 @@
 package com.spiderdt.mars.service
 
-import com.google.gson.Gson
 import groovy.sql.Sql
 import org.postgresql.ds.PGPoolingDataSource
 import org.springframework.core.io.ClassPathResource
 import org.springframework.stereotype.Service
 
 /**
- * Created by chong on 2017/5/12.
+ * Created by chong on 2017/5/15.
  */
 @Service
-class MarsDeleteSubplanService {
+class MarsDeleteBigplanService {
     private final String client_key = new ClassPathResource("psql/client.key.pk8").getURI().getPath()
     private final String client = new ClassPathResource("psql/client.cert.pem").getURI().getPath()
     private final String root = new ClassPathResource("psql/root.cert.pem").getURI().getPath()
@@ -27,22 +26,8 @@ class MarsDeleteSubplanService {
     }
 
     def delete(String name){
-        def sub_name = sqlClient.client.executeUpdate("delete from ods.mars_create_subplan where name = ${name}")
-        def big_res =  sqlClient.client.rows("select subplan_result from ods.mars_combine_subplan ")*.subplan_result
-        println("big_res:" + big_res)
-        println("big_res:" + big_res.class)
-        boolean isAllowDelete = true
-        big_res.each {
-            Gson gson = new Gson()
-            def subplan_result = new ArrayList<String>()
-            def jsonList = gson.fromJson(it as String, subplan_result.class)
-
-
-            jsonList.each {
-                //println it
-                if (it == name) isAllowDelete = false
-            }
-        }
-        return isAllowDelete
+        sqlClient.client.executeUpdate("delete from ods.mars_combine_subplan where name = ${name}")
+        return "success"
     }
+
 }
