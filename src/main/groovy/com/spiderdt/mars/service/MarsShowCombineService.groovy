@@ -28,31 +28,53 @@ class MarsShowCombineService {
     }
 
     def show(){
-       def res =  sqlClient.client.rows("select name,subplan_result from ods.mars_combine_subplan")
-       // println("res:" + res.get(0).get("subplan_result"))
+       def res =  sqlClient.client.rows("select distinct name,subplan_result from ods.mars_combine_subplan")
+        println("res:" + res)
         //println("res:" + res.get(0).get("subplan_result").class)
-        def big_name = res.get(0).get("name")
-        def sub_name = res.get(0).get("subplan_result")
+        def big_name = res.collect{it.get("name")}
+        println("big_name:" + big_name)
+        def sub_name = res.collect{it.get("subplan_result")}
+        println("sub_name:" + sub_name)
+
 
         Gson gson = new Gson()
         def name = new ArrayList<String>()
-        def a = gson.fromJson(sub_name, name.class)
-
 
 
         def sql  = "select name,start_time,end_time,create_time,exec_time,exec_status from  ods.mars_create_subplan where name in ("
-        a.collect{
-            println("it:"+ it)
-            sql = sql + "'$it',"
+//        def subname_list
+        sub_name.collect{
+
+            def subname_list = gson.fromJson(it, name.class)
+            println("subname_list:" + subname_list)
+
+            subname_list.collect{
+                println("it:" + it )
+                sql = sql + "'$it',"
+            }
         }
         def sql_res = sql.substring(0, sql.length() - 1) + ")"
-        def sql_result = sqlClient.client.rows(sql_res)
-        //println("sql_result:" + sql_result)
-        def map = new HashMap()
-        map.put("bigplan_name",big_name)
-        map.put("subplan_info",sql_result)
-        def list = new ArrayList()
-        list.add(map)
-        return  list
+        println("sql_res:" + sql_res)
+        def sql_result = sqlClient.client.rows(sql_res )
+        println("sql_result:" + sql_result)
+
+
+        def subplanResult = res.collect {
+            def subname_list = gson.fromJson(it['subplan_result'] as String, name.class)
+            [
+                    big_name: it['name'],
+                    subplan_info: subname_list.collect { a ->
+                        def sub_result = null
+                        sql_result.each {
+                            if (it['name'] == a) sub_result = it
+                        }
+                        sub_result
+                    }
+            ]
+        }
+
+        println "$subplanResult"
+        return subplanResult
+
     }
 }

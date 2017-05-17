@@ -13,8 +13,8 @@ class MarsCombinePlanTest extends BaseTest{
 
     @Test
     void combine(){
-        def name  = "ffff"
-        def list = ["计划1","test1"]
+        def name  = "jie"
+        def list = ["test","test1"]
         def start_time = "2016-12-14"
         def end_time = "2016-12-25"
         marsCombinePlanService.combine(name,list,start_time,end_time)

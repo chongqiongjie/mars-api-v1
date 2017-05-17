@@ -28,7 +28,7 @@ class MarsShowBigPlanController {
 
         def data = marsShowBigPlanService.show(name)
 
-        response.put("data",data)
+        response.put("bigplan_res",data)
         response.put("status","success")
         return ResponseEntity.status(HttpStatus.OK).body(response.toString())
     }

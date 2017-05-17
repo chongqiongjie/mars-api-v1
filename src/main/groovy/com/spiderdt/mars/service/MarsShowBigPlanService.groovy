@@ -37,13 +37,11 @@ class MarsShowBigPlanService {
 
         def jsonList = gson.fromJson(result,subplan_reult.class)
         println("jsonList:" + jsonList)
-        //println("jsonList:" + jsonList.collect{it.get("name")})
 
         String sql = "select result from ods.mars_show_subplan where name in ("
         jsonList.collect{
-            def sub_name = it.get("name")
-            println("sub_name:" + sub_name)
-            sql = sql + "'$sub_name',"
+            println("it:" + it)
+            sql = sql + "'$it',"
         }
 
         def  sql_res = sql.substring(0, sql.length() - 1) + ")"
@@ -53,13 +51,7 @@ class MarsShowBigPlanService {
         def bigplan_res = combine_res.get(0).get("result")
         println("bigplan_res:" + bigplan_res)
 
-        def map = new HashMap()
-        map.put("subplan_info",result)
-        map.put("bigplan_result",bigplan_res)
-        def list_res = new ArrayList()
-        list_res.add(map)
-        println("list_res:" + list_res)
 
-        return list_res
+        return bigplan_res
     }
 }

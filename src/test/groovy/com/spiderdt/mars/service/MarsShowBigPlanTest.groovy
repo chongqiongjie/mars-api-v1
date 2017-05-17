@@ -12,7 +12,7 @@ class MarsShowBigPlanTest extends  BaseTest{
 
     @Test
     void show(){
-        def name = "bigplan"
+        def name = "chong"
         marsShowBigPlanService.show(name)
     }
 }

@@ -13,7 +13,7 @@ class MarsExecuteCreateServiceTest extends BaseTest{
     @Test
     void execute(){
         def url = "/predict/sub_promo_plan"
-        def name = "123"
+        def name = "test1"
         def category = "1"
         def group = "1"
         def product = "2"
