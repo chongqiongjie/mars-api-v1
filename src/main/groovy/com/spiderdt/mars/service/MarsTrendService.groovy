@@ -28,7 +28,7 @@ class MarsTrendService extends BaseService {
 
 //   def sqlClient = openSqlClient("192.168.1.3", "5432", "ms", "spiderdt","C:\\setup\\pgadmin_ssl_pk8\\client.key.pk8","C:\\setup\\pgadmin_ssl_pk8\\client.cert.pem","C:\\setup\\pgadmin_ssl_pk8\\root.cert.pem")
 //    def openSqlClient(hostname, port, username, password,client_key,client,root) {
-    def sqlClient = openSqlClient("192.168.1.3", "5432", "ms", "spiderdt")
+    def sqlClient = openSqlClient("192.168.1.2", "5432", "ms", "spiderdt")
     def openSqlClient(hostname, port, username, password) {
         def client = new Sql(new PGPoolingDataSource().each {
             it.url = "jdbc:postgresql://${hostname}:${port}/dw?useSSL=true&ssl=true&characterEncoding=utf-8&stringtype=unspecified&sslmode=require&sslkey=${client_key}&sslcert=${client}&sslrootcert=${root}&sslfactory=org.postgresql.ssl.jdbc4.LibPQFactory".toString()
