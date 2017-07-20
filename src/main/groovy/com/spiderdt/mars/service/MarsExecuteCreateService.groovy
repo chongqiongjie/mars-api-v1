@@ -32,7 +32,7 @@ class MarsExecuteCreateService extends psqlService{
 //    }
 
 
-    private static String clientUrl = "http://192.168.1.187"
+    private static String clientUrl = "http://192.168.1.19"
     private static String clientPortUrl = clientUrl + ":9123"
 
     static http = new AsyncHTTPBuilder(poolSize: 30, uri:clientPortUrl)
@@ -53,7 +53,8 @@ class MarsExecuteCreateService extends psqlService{
                     drivers: drivers.collectEntries {[it.key, it.value/100]}
             ]
             println("body:"+ body)
-            //println("url:"+ url)
+            println("uri:" + uri)
+            println("url:"+ url)
             println("d:"+ drivers.collectEntries {[it.key, it.value/100]})
         }
         while (!future.done){
@@ -61,6 +62,7 @@ class MarsExecuteCreateService extends psqlService{
         }
         try{
             def res = future.get()
+            println("res+++:" + res)
             ObjectMapper mapper = new ObjectMapper()
             def resJson = mapper.writeValueAsString(res)
             println(resJson)

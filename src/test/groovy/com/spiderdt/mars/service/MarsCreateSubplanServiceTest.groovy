@@ -12,7 +12,7 @@ class MarsCreateSubplanServiceTest extends BaseTest{
 
     @Test
     void createSubplanTest(){
-        def name = "test1"
+        def name = "test11111"
         def category_1 = "生活用品"
         def category_2 = "厨房用品"
         def product_name = "铲子"
